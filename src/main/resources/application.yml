@@ -4,3 +4,36 @@ server:
 spring:
   application:
     name: payment-service
+
+  datasource:
+    url: ${DB_HOST}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      idle-timeout: 10000
+      max-lifetime: 30000
+      connection-timeout: 30000
+
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 50
+        queue-capacity: 100
+
+  sql:
+    init:
+      mode: never
+
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
+    streams:
+      application-id: tablepick-stream
