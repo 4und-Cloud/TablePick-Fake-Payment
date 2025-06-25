@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.goorm.tablepick.payment.dto.PaymentRequestDto;
+import com.goorm.tablepick.payment.event.model.PaymentRequestEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -61,7 +62,7 @@ public class KafkaConfig {
 
     // --- Consumer Configuration for PaymentRequestEvent (결제 서버가 수신하는 이벤트) ---
     @Bean
-    public ConsumerFactory<String, PaymentRequestDto> consumerFactory() {
+    public ConsumerFactory<String, PaymentRequestEvent> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaHost);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId);
@@ -69,10 +70,9 @@ public class KafkaConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
 
-        // 명시적으로 타입 지정
-        JsonDeserializer<PaymentRequestDto> jsonDeserializer =
-                new JsonDeserializer<>(PaymentRequestDto.class, objectMapper(), false);
-        jsonDeserializer.addTrustedPackages("*");
+        JsonDeserializer<PaymentRequestEvent> jsonDeserializer =
+                new JsonDeserializer<>(PaymentRequestEvent.class, objectMapper(), false);
+        jsonDeserializer.addTrustedPackages("com.goorm.tablepick.*");
 
         return new DefaultKafkaConsumerFactory<>(
                 props,
@@ -81,12 +81,12 @@ public class KafkaConfig {
         );
     }
 
-
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PaymentRequestDto> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PaymentRequestDto> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, PaymentRequestEvent> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PaymentRequestEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
+
 }
