@@ -21,7 +21,7 @@ public class PgClient {
         log.info("[PgClient] 외부 PG사 API 호출: {}", request);
         try {
             PaymentResponseDto response = webClient.post()
-                    .uri("http://localhost:8083/api/pg/approve") // 실제 PG사 승인 API 엔드포인트
+                    .uri("http://tablepick-payments-new:8083/api/pg/approve") // 실제 PG사 승인 API 엔드포인트
                     .bodyValue(request)
                     .retrieve()
                     .bodyToMono(PaymentResponseDto.class)
