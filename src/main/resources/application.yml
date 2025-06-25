@@ -34,7 +34,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # JsonSerializer 사용
       properties:
         spring.json.add.type.headers: false
-      acks: all
       retries: 3
     consumer:
       group-id: payment-group # 결제 서버의 컨슈머 그룹 ID
