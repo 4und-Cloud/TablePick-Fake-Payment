@@ -72,7 +72,7 @@ public class KafkaConfig {
 
         JsonDeserializer<PaymentRequestEvent> jsonDeserializer =
                 new JsonDeserializer<>(PaymentRequestEvent.class, objectMapper(), false);
-        jsonDeserializer.addTrustedPackages("com.goorm.tablepick.*");
+        jsonDeserializer.addTrustedPackages("*");
 
         return new DefaultKafkaConsumerFactory<>(
                 props,

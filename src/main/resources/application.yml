@@ -34,6 +34,6 @@ spring:
       properties:
         spring.json.trusted.packages: "*" # 결제 이벤트 모델만 신뢰해도 됨
 
-    jackson:
-      serialization:
-        write-dates-as-timestamps: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
