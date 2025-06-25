@@ -28,12 +28,22 @@ spring:
       mode: never
 
   kafka:
-    bootstrap-servers: ${KAFKA_HOST}
+    bootstrap-servers: ${KAFKA_HOST} # 환경 변수 KAFKA_HOST를 사용
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # JsonSerializer 사용
+      acks: all
+      retries: 3
     consumer:
+      group-id: payment-group # 결제 서버의 컨슈머 그룹 ID
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: true
+      auto-commit-interval: 500
+      auto-offset-reset: latest
       properties:
-        spring.json.trusted.packages: "*"
-    streams:
-      application-id: tablepick-stream
+        spring.json.trusted.packages: "com.goorm.tablepick.payment.event.model.*" # 결제 이벤트 모델만 신뢰해도 됨
+
+    jackson:
+      serialization:
+        write-dates-as-timestamps: false
