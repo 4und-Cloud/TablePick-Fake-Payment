@@ -69,7 +69,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
 
         JsonDeserializer<Object> jsonDeserializer = new JsonDeserializer<>(objectMapper());
-        jsonDeserializer.addTrustedPackages("com.goorm.tablepick.payment.event.model.*"); // 결제 이벤트 모델만 신뢰
+        jsonDeserializer.addTrustedPackages("com.goorm.tablepick.*");
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), jsonDeserializer);
     }

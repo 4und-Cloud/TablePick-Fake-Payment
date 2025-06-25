@@ -42,7 +42,7 @@ spring:
       auto-commit-interval: 500
       auto-offset-reset: latest
       properties:
-        spring.json.trusted.packages: "com.goorm.tablepick.payment.event.model.*" # 결제 이벤트 모델만 신뢰해도 됨
+        spring.json.trusted.packages: "com.goorm.tablepick.*" # 결제 이벤트 모델만 신뢰해도 됨
 
     jackson:
       serialization:
