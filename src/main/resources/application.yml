@@ -5,17 +5,6 @@ spring:
   application:
     name: payment-service
 
-  datasource:
-    url: ${DB_HOST}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    hikari:
-      maximum-pool-size: 50
-      minimum-idle: 10
-      idle-timeout: 10000
-      max-lifetime: 30000
-      connection-timeout: 30000
-
   task:
     execution:
       pool:
